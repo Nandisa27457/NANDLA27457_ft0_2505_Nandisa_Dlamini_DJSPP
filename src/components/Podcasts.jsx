@@ -103,10 +103,6 @@ const Podcasts = () => {
             <PodcastControls
                 searchQuery={searchQuery} //search state
                 setSearchQuery={setSearchQuery} //function to update search state
-                sortBy={sortBy} //sort state
-                setSortBy={setSortBy} //function to update sort state
-                selectedGenre={selectedGenre} //genre filter state
-                setSelectedGenre={setSelectedGenre} //function to update genre filter state
             />
 
             {/* Podcast Grid */}
