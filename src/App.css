@@ -25,3 +25,203 @@ img{
   margin-left:10px;
 }
 
+/* ===== Global Styles ===== */
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(180deg, #ffffff, #f7f7f7);
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth transitions for hover/focus */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #9bd80f; /* lime green accent */
+}
+
+a:hover {
+  color: #7bb80c;
+}
+
+/* Container styling */
+.podcast-details {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+/* ===== Header ===== */
+.podcast-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  background: rgba(240, 240, 240, 0.6); /* translucent light grey */
+  backdrop-filter: blur(8px);
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.poster img {
+  width: 220px;
+  height: auto;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+.podcast-main {
+  flex: 1;
+}
+
+.podcast-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #111;
+}
+
+.podcast-desc {
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* ===== Stats Grid ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.stat {
+  background: white;
+  border: 1px solid rgba(200, 200, 200, 0.3);
+  padding: 0.8rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.stat h4 {
+  margin: 0;
+  color: #9bd80f;
+  font-weight: 600;
+}
+
+.stat p {
+  margin-top: 0.3rem;
+  color: #333;
+}
+
+/* ===== Season Selector ===== */
+.season-select {
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+select {
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* ===== Season Cards ===== */
+.season-card {
+  background: rgba(245, 245, 245, 0.7);
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.season-poster img {
+  width: 100%;
+  border-bottom: 3px solid #9bd80f;
+}
+
+.season-body {
+  padding: 1.2rem;
+}
+
+.season-title {
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.season-desc {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* ===== Episodes ===== */
+.episodes {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.episode-card {
+  display: flex;
+  gap: 1rem;
+  background: white;
+  border-radius: 0.75rem;
+  padding: 0.8rem;
+  align-items: flex-start;
+  border-left: 4px solid transparent;
+}
+
+.episode-card:hover {
+  border-left: 4px solid #9bd80f;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.episode-thumb img {
+  width: 70px;
+  height: 70px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.episode-info {
+  flex: 1;
+}
+
+.episode-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.episode-desc {
+  color: #555;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+/* ===== Favourite heart styling ===== */
+.episode-title span:hover svg path {
+  stroke: #9bd80f;
+  fill: #9bd80f;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .podcast-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .poster img {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+
