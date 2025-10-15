@@ -30,7 +30,7 @@ export default function RecommendedShows() {
 
     return (
         <div style={{ margin: "30px 0" }}>
-            <h2>Recommended Shows</h2>
+            <h2 className="recommended-heading">Recommended Shows</h2>
             {loading ? (
                 <p>Loading...</p>
             ) : (
