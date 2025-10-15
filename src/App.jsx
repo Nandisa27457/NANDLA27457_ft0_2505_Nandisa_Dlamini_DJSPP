@@ -3,16 +3,21 @@ import "./App.css";
 import HomePage from "./Pages/HomePage";
 import FavouritesPage from "./Pages/FavouritesPage";
 import PodcastPage from "./Pages/PodcastPage";
-function App() {
+import { FavouritesProvider } from "../src/components/FavouritesContext";
+
+
+export default function App() {
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/favourites" element={<FavouritesPage />} />
-                <Route path="/podcast/:id" element={<PodcastPage />} />
-            </Routes>
-        </Router>
+        <FavouritesProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/favourites" element={<FavouritesPage />} />
+                    <Route path="/podcast/:id" element={<PodcastPage />} />
+                </Routes>
+            </Router>
+        </FavouritesProvider>
     );
 }
 
-export default App;
+
