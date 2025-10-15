@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useFavourites } from "./FavouritesContext";
 import { useParams } from "react-router-dom";
 import { fetchPodcastDetails, formatDate } from "../utility";
 
 export default function PodcastDetails() {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { toggleFavourite, isFavourite } = useFavourites();
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -82,7 +86,7 @@ export default function PodcastDetails() {
                 </div>
             </div>
 
-            {/* Seasons selector (optional) */}
+            {/* Seasons selector */}
             {seasons.length > 0 && (
                 <div className="season-select">
                     <label>Choose season:</label>
@@ -132,8 +136,74 @@ export default function PodcastDetails() {
                                             </div>
                                         )}
                                         <div className="episode-info">
-                                            <div className="episode-title">
+                                            <div
+                                                className="episode-title"
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: "8px",
+                                                }}>
                                                 Episode {ep.episode}: {ep.title}
+                                                <span
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        fontSize: "22px",
+                                                        color: isFavourite({
+                                                            ...ep,
+                                                            season: season.season,
+                                                            podcastId: data.id,
+                                                        })
+                                                            ? "red"
+                                                            : "#aaa",
+                                                    }}
+                                                    title={
+                                                        isFavourite({
+                                                            ...ep,
+                                                            season: season.season,
+                                                            podcastId: data.id,
+                                                        })
+                                                            ? "Remove from favourites"
+                                                            : "Add to favourites"
+                                                    }
+                                                    onClick={() => {
+                                                        toggleFavourite({
+                                                            ...ep,
+                                                            season: season.season,
+                                                            podcastId: data.id,
+                                                            podcastTitle:
+                                                                data.title,
+                                                        });
+                                                    }}>
+                                                    {isFavourite({
+                                                        ...ep,
+                                                        season: season.season,
+                                                        podcastId: data.id,
+                                                    }) ? (
+                                                        <svg
+                                                            width="22"
+                                                            height="22"
+                                                            viewBox="0 0 24 24"
+                                                            fill="red"
+                                                            stroke="red"
+                                                            strokeWidth="2"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round">
+                                                            <path d="M12 21C12 21 4 13.36 4 8.5C4 5.42 6.42 3 9.5 3C11.24 3 12.91 4.1 13.44 5.68C13.97 4.1 15.64 3 17.38 3C20.46 3 22.88 5.42 22.88 8.5C22.88 13.36 15 21 12 21Z"></path>
+                                                        </svg>
+                                                    ) : (
+                                                        <svg
+                                                            width="22"
+                                                            height="22"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            stroke="#aaa"
+                                                            strokeWidth="2"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round">
+                                                            <path d="M12 21C12 21 4 13.36 4 8.5C4 5.42 6.42 3 9.5 3C11.24 3 12.91 4.1 13.44 5.68C13.97 4.1 15.64 3 17.38 3C20.46 3 22.88 5.42 22.88 8.5C22.88 13.36 15 21 12 21Z"></path>
+                                                        </svg>
+                                                    )}
+                                                </span>
                                             </div>
                                             <div className="episode-desc">
                                                 {ep.description}
