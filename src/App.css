@@ -340,3 +340,31 @@ Pagination Buttons
     opacity: 0.7;
     cursor: not-allowed;
 }
+
+
+/*============
+Audio player
+=============*/
+.play-button {
+  background-color: #ddb4dc; 
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: rgba(255, 255, 255, 0.636);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.play-button:hover {
+  transform: scale(1.08);
+  background-color: #c47cbb;
+}
+
+h2.favourites-title{
+    display:none;
+}
+
+h1{
+    display:none;
+}
