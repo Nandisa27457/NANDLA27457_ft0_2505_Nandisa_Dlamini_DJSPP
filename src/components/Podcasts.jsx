@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Podcast from "./Podcast";
-import PodcastControls from "./PodcastControls";
 import { fetchPodcasts, fetchGenreTitles, formatDate } from "../utility";
 
 /**
@@ -8,13 +7,11 @@ import { fetchPodcasts, fetchGenreTitles, formatDate } from "../utility";
  * @returns Podcasts component with search, sort, filter, and pagination
  */
 
-const Podcasts = () => {
+const Podcasts = ({ searchQuery, sortBy }) => {
     const [podcasts, setPodcasts] = useState([]); // Data state
     const [isLoading, setIsLoading] = useState(true); //loading state
 
     // UI state
-    const [searchQuery, setSearchQuery] = useState(""); //search state
-    const [sortBy, setSortBy] = useState("date-desc"); //sort state
     const [selectedGenre, setSelectedGenre] = useState(""); //genre filter state
     const [currentPage, setCurrentPage] = useState(1); //pagination state
     const itemsPerPage = 8; //items per page
@@ -99,12 +96,6 @@ const Podcasts = () => {
 
     return (
         <div>
-            {/* Controls Component */}
-            <PodcastControls
-                searchQuery={searchQuery} //search state
-                setSearchQuery={setSearchQuery} //function to update search state
-            />
-
             {/* Podcast Grid */}
             <div className="podcast-grid">
                 {paginatedPodcasts.map(
