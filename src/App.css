@@ -64,6 +64,7 @@ img{
   transform: translateY(-6px);
   box-shadow: 0 6px 16px rgba(195, 12, 195, 0.2); /* soft green glow */
   border: 1px solid rgba(163, 66, 149, 0.279);
+  background-color: #d6a3c143;
 }
 
 .podcast-card:hover h3,
