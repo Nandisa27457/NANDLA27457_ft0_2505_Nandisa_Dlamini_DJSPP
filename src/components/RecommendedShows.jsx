@@ -27,11 +27,11 @@ export default function RecommendedShows() {
         autoplay: true,
         autoplaySpeed: 3000,
         centerMode: true,
-        centerPadding: "0px",
+        centerPadding: "60px 0px 60px 0px",
     };
 
     return (
-        <div style={{ margin: "30px 0" }}>
+        <div style={{ width: "100vw" }}>
             <h2 className="recommended-heading">Recommended Shows</h2>
             {loading ? (
                 <p>Loading...</p>
