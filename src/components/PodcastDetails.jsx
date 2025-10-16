@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFavourites } from "./FavouritesContext";
-import { useParams } from "react-router-dom";
 import { fetchPodcastDetails, formatDate } from "../utility";
+import useAudioPlayer from "../context/AudioPlayer"; 
 
 export default function PodcastDetails() {
-    const { id } = useParams();//fecth ID from URL 
-    const navigate = useNavigate();//
+    const { id } = useParams();
+    const navigate = useNavigate();
     const { toggleFavourite, isFavourite } = useFavourites();
+    const { playTrack, currentTrack, isPlaying } = useAudioPlayer(); // ✅ use the audio player context
+
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -27,7 +29,7 @@ export default function PodcastDetails() {
             try {
                 const res = await fetchPodcastDetails(id);
                 setData(res);
-                if (res && res.seasons && res.seasons.length > 0) {
+                if (res?.seasons?.length > 0) {
                     setSelectedSeason(res.seasons[0].season);
                 }
             } catch (err) {
@@ -37,11 +39,10 @@ export default function PodcastDetails() {
                 setLoading(false);
             }
         }
-
         if (id) load();
     }, [id]);
 
-    if (loading) return <h1>Loading</h1>;
+    if (loading) return <h1>Loading…</h1>;
     if (error) return <p className="error">Error: {error}</p>;
     if (!data) return <p>No details found.</p>;
 
@@ -52,7 +53,7 @@ export default function PodcastDetails() {
 
     return (
         <div className="podcast-details">
-            {/* Header: image + title + description */}
+            {/* Header */}
             <div className="podcast-header">
                 <div className="poster">
                     {data.image && <img src={data.image} alt={data.title} />}
@@ -86,7 +87,7 @@ export default function PodcastDetails() {
                 </div>
             </div>
 
-            {/* Seasons selector */}
+            {/* Season selector */}
             {seasons.length > 0 && (
                 <div className="season-select">
                     <label>Choose season:</label>
@@ -102,7 +103,7 @@ export default function PodcastDetails() {
                 </div>
             )}
 
-            {/* Seasons and episodes */}
+            {/* Episodes */}
             <div className="seasons-list">
                 {seasons.map((season) => (
                     <div key={season.season} className="season-card">
@@ -111,6 +112,7 @@ export default function PodcastDetails() {
                                 <img src={season.image} alt={season.title} />
                             )}
                         </div>
+
                         <div className="season-body">
                             <h3 className="season-title">
                                 {season.title || `Season ${season.season}`}
@@ -121,12 +123,7 @@ export default function PodcastDetails() {
                                 {(season.episodes || []).map((ep, idx) => (
                                     <div
                                         key={ep.episode || idx}
-                                        className={`episode-card ${
-                                            String(season.season) ===
-                                            String(selectedSeason)
-                                                ? "active"
-                                                : ""
-                                        }`}>
+                                        className="episode-card">
                                         {season.image && (
                                             <div className="episode-thumb">
                                                 <img
@@ -135,15 +132,22 @@ export default function PodcastDetails() {
                                                 />
                                             </div>
                                         )}
+
                                         <div className="episode-info">
                                             <div
                                                 className="episode-title"
                                                 style={{
                                                     display: "flex",
+                                                    justifyContent: "space-between",
                                                     alignItems: "center",
-                                                    gap: "8px",
+                                                    width: "100%",
                                                 }}>
-                                                Episode {ep.episode}: {ep.title}
+                                                <span>
+                                                    Episode {ep.episode}:{" "}
+                                                    {ep.title}
+                                                </span>
+
+                                                {/* Heart favourite toggle */}
                                                 <span
                                                     style={{
                                                         cursor: "pointer",
@@ -153,61 +157,46 @@ export default function PodcastDetails() {
                                                             season: season.season,
                                                             podcastId: data.id,
                                                         })
-                                                            ? "red"
+                                                            ? "pink"
                                                             : "#aaa",
                                                     }}
-                                                    title={
-                                                        isFavourite({
-                                                            ...ep,
-                                                            season: season.season,
-                                                            podcastId: data.id,
-                                                        })
-                                                            ? "Remove from favourites"
-                                                            : "Add to favourites"
-                                                    }
-                                                    onClick={() => {
+                                                    onClick={() =>
                                                         toggleFavourite({
                                                             ...ep,
                                                             season: season.season,
                                                             podcastId: data.id,
                                                             podcastTitle:
                                                                 data.title,
-                                                        });
-                                                    }}>
-                                                    {isFavourite({
-                                                        ...ep,
-                                                        season: season.season,
-                                                        podcastId: data.id,
-                                                    }) ? (
-                                                        <svg
-                                                            width="22"
-                                                            height="22"
-                                                            viewBox="0 0 24 24"
-                                                            fill="pink"
-                                                            stroke="pink"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round">
-                                                            <path d="M12 21C12 21 4 13.36 4 8.5C4 5.42 6.42 3 9.5 3C11.24 3 12.91 4.1 13.44 5.68C13.97 4.1 15.64 3 17.38 3C20.46 3 22.88 5.42 22.88 8.5C22.88 13.36 15 21 12 21Z"></path>
-                                                        </svg>
-                                                    ) : (
-                                                        <svg
-                                                            width="22"
-                                                            height="22"
-                                                            viewBox="0 0 24 24"
-                                                            fill="none"
-                                                            stroke="#aaa"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round">
-                                                            <path d="M12 21C12 21 4 13.36 4 8.5C4 5.42 6.42 3 9.5 3C11.24 3 12.91 4.1 13.44 5.68C13.97 4.1 15.64 3 17.38 3C20.46 3 22.88 5.42 22.88 8.5C22.88 13.36 15 21 12 21Z"></path>
-                                                        </svg>
-                                                    )}
+                                                        })
+                                                    }>
+                                                    ♥
                                                 </span>
                                             </div>
-                                            <div className="episode-desc">
+
+                                            <p className="episode-desc">
                                                 {ep.description}
-                                            </div>
+                                            </p>
+
+                                            {/* ✅ Global play button */}
+                                            <button
+                                                className="play-button"
+                                                onClick={() =>
+                                                    playTrack({
+                                                        id: `${data.id}-${ep.episode}`,
+                                                        title: ep.title,
+                                                        audio: ep.file,
+                                                        podcastTitle: data.title,
+                                                        image:
+                                                            season.image ||
+                                                            data.image,
+                                                    })
+                                                }>
+                                                {currentTrack?.id ===
+                                                    `${data.id}-${ep.episode}` &&
+                                                isPlaying
+                                                    ? "⏸ Pause"
+                                                    : "▶ Play"}
+                                            </button>
                                         </div>
                                     </div>
                                 ))}
