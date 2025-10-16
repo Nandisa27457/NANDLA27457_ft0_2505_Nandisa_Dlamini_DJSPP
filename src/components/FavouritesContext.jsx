@@ -33,7 +33,7 @@ export function FavouritesProvider({ children }) {
                 )
             );
         } else {
-            setFavourites([...favourites, episode]);
+            setFavourites([...favourites, { ...episode, dateAdded: new Date().toISOString() }]);
         }
     }
 
