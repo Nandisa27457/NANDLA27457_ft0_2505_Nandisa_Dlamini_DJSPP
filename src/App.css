@@ -114,6 +114,7 @@ img{
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   overflow: visible;
   color:#986784;
+  background-color: #d9bbd662;
 
 }
 
