@@ -26,6 +26,8 @@ export default function RecommendedShows() {
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
+        centerMode: true,
+        centerPadding: "0px",
     };
 
     return (
@@ -34,11 +36,13 @@ export default function RecommendedShows() {
             {loading ? (
                 <p>Loading...</p>
             ) : (
-                <Slider {...settings}>
-                    {topPodcasts.map((podcast) => (
-                        <Podcast key={podcast.id} {...podcast} />
-                    ))}
-                </Slider>
+                <div className="carousel-strip">
+                    <Slider {...settings}>
+                        {topPodcasts.map((podcast) => (
+                            <Podcast key={podcast.id} {...podcast} />
+                        ))}
+                    </Slider>
+                </div>
             )}
         </div>
     );
