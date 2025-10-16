@@ -5,8 +5,8 @@ import { useParams } from "react-router-dom";
 import { fetchPodcastDetails, formatDate } from "../utility";
 
 export default function PodcastDetails() {
-    const { id } = useParams();
-    const navigate = useNavigate();
+    const { id } = useParams();//fecth ID from URL 
+    const navigate = useNavigate();//
     const { toggleFavourite, isFavourite } = useFavourites();
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -183,8 +183,8 @@ export default function PodcastDetails() {
                                                             width="22"
                                                             height="22"
                                                             viewBox="0 0 24 24"
-                                                            fill="red"
-                                                            stroke="red"
+                                                            fill="pink"
+                                                            stroke="pink"
                                                             strokeWidth="2"
                                                             strokeLinecap="round"
                                                             strokeLinejoin="round">
