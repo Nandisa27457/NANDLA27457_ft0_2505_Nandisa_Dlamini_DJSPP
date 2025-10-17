@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fce4ec; /* blush pink background */
+  background: #fce4ec; 
   padding: 20px 40px;
   border-radius: 0 0 16px 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -12,6 +12,7 @@
   left: 20px;
   padding: 40px;
   margin-left: 20px;
+  position:sticky;
 }
 
 .header-title {
@@ -109,4 +110,28 @@
 
 h2.header-title {
   display: none;
+}
+
+
+@media (max-width: 319px){
+  .header-container{
+    width:1000px;
+    background-color:fce4ec;
+    
+  }
+
+  .search-input{
+    margin-left:170px;
+    width:400px;
+  }
+
+  .sort-dropdown{
+    position: relative;
+    right:100px;
+
+  }
+  .header-link{
+    position: relative;
+    right:120px;
+  }
 }
