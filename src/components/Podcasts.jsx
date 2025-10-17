@@ -1,95 +1,100 @@
-import React, { useState, useEffect, useMemo } from "react";
-import Podcast from "./Podcast";
-import { fetchPodcasts, fetchGenreTitles, formatDate } from "../utility";
-
 /**
- *
- * @returns Podcasts component with search, sort, filter, and pagination
+ * @file Podcasts component for displaying a grid of podcasts with search, sort, filter, and pagination.
+ * @module Podcasts
  */
 
+import React, { useState, useEffect, useMemo } from "react"; // Import React hooks
+import Podcast from "./Podcast"; // Import the Podcast component
+import { fetchPodcasts, fetchGenreTitles, formatDate } from "../utility"; // Import utility functions
+
+/**
+ * Podcasts component displays a list of podcasts, allowing users to search, sort,
+ * filter by genre, and navigate through pages.
+ *
+ * @param {object} props - The component props.
+ * @param {string} props.searchQuery - The current search query string from the Header.
+ * @param {string} props.sortBy - The current sorting criteria from the Header.
+ * @returns {JSX.Element} The Podcasts component.
+ */
 const Podcasts = ({ searchQuery, sortBy }) => {
-    const [podcasts, setPodcasts] = useState([]); // Data state
-    const [isLoading, setIsLoading] = useState(true); //loading state
+    const [podcasts, setPodcasts] = useState([]); // State to store the fetched podcast data
+    const [isLoading, setIsLoading] = useState(true); // State to manage the loading status
 
-    // UI state
-    const [selectedGenre, setSelectedGenre] = useState(""); //genre filter state
-    const [currentPage, setCurrentPage] = useState(1); //pagination state
-    const itemsPerPage = 8; //items per page
+    // UI state for filtering and pagination
+    const [selectedGenre, setSelectedGenre] = useState(""); // State for the selected genre filter
+    const [currentPage, setCurrentPage] = useState(1); // State for the current page in pagination
+    const itemsPerPage = 8; // Number of podcasts to display per page
 
+    // useEffect hook to fetch podcast data when the component mounts
     useEffect(() => {
+        /**
+         * Asynchronously fetches podcast data from the API.
+         */
         async function fetchData() {
             try {
-                const data = await fetchPodcasts(); //fetch podcast data
-                setPodcasts(data); //set data state
+                const data = await fetchPodcasts(); // Fetch podcast data
+                setPodcasts(data); // Set the fetched data to the podcasts state
             } catch (error) {
-                console.error("Error fetching podcasts:", error); //error handling
+                console.error("Error fetching podcasts:", error); // Log any errors during fetching
             } finally {
-                setIsLoading(false); //set loading state to false when done loading
+                setIsLoading(false); // Set loading state to false after data is fetched (or error occurs)
             }
         }
-        fetchData();
-    }, []);
+        fetchData(); // Call the fetchData function
+    }, []); // Empty dependency array ensures this effect runs only once on mount
 
-    // Derived list
+    /**
+     * Memoized list of podcasts after applying search, genre filter, and sorting.
+     * Recomputes only when `podcasts`, `searchQuery`, `sortBy`, or `selectedGenre` changes.
+     */
     const processedPodcasts = useMemo(() => {
-        let result = [...podcasts]; //copy of podcasts array
+        let result = [...podcasts]; // Create a mutable copy of the podcasts array
 
-        // Search bar
-        // Filter by search query
-        if (searchQuery.trim() !== "") {
-            //check if search query is not empty
+        // Search bar: Filter by search query
+        if (searchQuery.trim() !== "") { // Check if the search query is not empty
             result = result.filter(
-                (
-                    p //filter podcasts based on search query
-                ) => p.title.toLowerCase().includes(searchQuery.toLowerCase()) //case insensitive search
+                (p) => p.title.toLowerCase().includes(searchQuery.toLowerCase()) // Filter podcasts where title includes the search query (case-insensitive)
             );
         }
 
-        // Genre Filter;
-        // Filter by selected genre
-        if (selectedGenre) {
-            //filter if a genre is selected
+        // Genre Filter: Filter by selected genre
+        if (selectedGenre) { // Check if a genre is selected
             result = result.filter((p) => {
-                //filter podcasts based on selected genre
-                const titles = getGenres(p.genres); //get genre titles for each podcast
-                return titles.includes(selectedGenre); //check if selected genre is in podcast genres
+                const titles = getGenres(p.genres); // Get genre titles for each podcast (assuming getGenres is defined elsewhere)
+                return titles.includes(selectedGenre); // Check if the selected genre is present in the podcast's genres
             });
         }
 
-        // Dynamic Sorting
-        // Sort based on sortBy state
-        result.sort((a, b) => {
-            //sort podcasts based on sortBy state
+        // Dynamic Sorting: Sort based on sortBy state
+        result.sort((a, b) => { // Sort the podcasts array
             if (sortBy === "date-desc")
-                return new Date(b.lastUpdated) - new Date(a.lastUpdated); //newest first
-            if (sortBy === "title-asc") return a.title.localeCompare(b.title); //title A-Z
-            if (sortBy === "title-desc") return b.title.localeCompare(a.title); //title Z-A
-            return 0; //no sorting
+                return new Date(b.lastUpdated) - new Date(a.lastUpdated); // Sort by last updated date, newest first
+            if (sortBy === "title-asc") return a.title.localeCompare(b.title); // Sort by title in ascending order (A-Z)
+            if (sortBy === "title-desc") return b.title.localeCompare(a.title); // Sort by title in descending order (Z-A)
+            return 0; // No sorting if sortBy criteria is not matched
         });
 
-        return result;
-    }, [podcasts, searchQuery, sortBy, selectedGenre]); //recompute when dependencies change
+        return result; // Return the processed list of podcasts
+    }, [podcasts, searchQuery, sortBy, selectedGenre]); // Dependencies for memoization
 
-    // Pagination
-    const totalPages = Math.ceil(processedPodcasts.length / itemsPerPage); //calculate total pages
-    const startIndex = (currentPage - 1) * itemsPerPage; //calculate start index for current page
+    // Pagination calculations
+    const totalPages = Math.ceil(processedPodcasts.length / itemsPerPage); // Calculate the total number of pages
+    const startIndex = (currentPage - 1) * itemsPerPage; // Calculate the starting index for the current page
     const paginatedPodcasts = processedPodcasts.slice(
-        startIndex, //slice podcasts for current page
-        startIndex + itemsPerPage //end index
+        startIndex, // Slice the processed podcasts array from the start index
+        startIndex + itemsPerPage // To the end index for the current page
     );
 
-    // Reset page when filters change
+    // useEffect hook to reset the current page to 1 when filters or search queries change
     useEffect(() => {
-        //reset current page to 1 when filters change
-        setCurrentPage(1); ///reset to first page
-    }, [searchQuery, sortBy, selectedGenre]); //reset when dependencies change
+        setCurrentPage(1); // Reset to the first page
+    }, [searchQuery, sortBy, selectedGenre]); // Dependencies for resetting page
 
-    // Loading state
+    // Render loading indicator if data is still being fetched
     if (isLoading) {
-        //show loading indicator while data is being fetched
         return (
-            <div className="loading">
-                <div className="loading-text">Loading...</div>
+            <div className="loading"> {/* Loading container */}
+                <div className="loading-text">Loading...</div> {/* Loading text */}
             </div>
         );
     }
@@ -97,26 +102,24 @@ const Podcasts = ({ searchQuery, sortBy }) => {
     return (
         <div>
             {/* Podcast Grid */}
-            <div className="podcast-grid">
+            <div className="podcast-grid"> {/* Container for the grid of podcasts */}
                 {paginatedPodcasts.map(
-                    (
-                        podcast //map through paginated podcasts
-                    ) => (
-                        <Podcast key={podcast.id} {...podcast} /> //podcast component for each podcast
+                    (podcast) => ( // Map through the paginated podcasts
+                        <Podcast key={podcast.id} {...podcast} /> // Render a Podcast component for each podcast
                     )
                 )}
             </div>
 
-            {/* Pagination */}
-            <div className="pagination">
-                {Array.from({ length: totalPages }, (_, i) => (
+            {/* Pagination controls */}
+            <div className="pagination"> {/* Container for pagination buttons */}
+                {Array.from({ length: totalPages }, (_, i) => ( // Create an array for page numbers
                     <button
-                        key={i + 1} //button for each page
-                        className={currentPage === i + 1 ? "active" : ""} //highlight active page
-                        disabled={currentPage === i + 1} //disable button for current page
-                        onClick={() => setCurrentPage(i + 1)} //set current page on click
+                        key={i + 1} // Unique key for each button
+                        className={currentPage === i + 1 ? "active" : ""} // Apply 'active' class if it's the current page
+                        disabled={currentPage === i + 1} // Disable the button for the current page
+                        onClick={() => setCurrentPage(i + 1)} // Set the current page on button click
                     >
-                        {i + 1}
+                        {i + 1} {/* Display the page number */}
                     </button>
                 ))}
             </div>
@@ -124,4 +127,4 @@ const Podcasts = ({ searchQuery, sortBy }) => {
     );
 };
 
-export default Podcasts;
+export default Podcasts; // Export the Podcasts component as default
