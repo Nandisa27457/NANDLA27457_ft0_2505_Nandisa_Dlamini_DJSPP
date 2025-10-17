@@ -74,14 +74,6 @@ export default function HomePage() {
             />
 
             {/* 
-                Sidebar Section
-                ----------------
-                - Provides navigation links (e.g., Home, Favourites).
-                - Persistent across pages for consistent layout.
-            */}
-            <SideBar />
-
-            {/* 
                 Recommended Section
                 --------------------
                 - Displays a horizontal carousel of recommended podcasts or shows.
