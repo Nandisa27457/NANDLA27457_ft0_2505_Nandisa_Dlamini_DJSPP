@@ -3,7 +3,7 @@
   bottom: 0; /* Always visible at the bottom */
   left: 0;
   right: 0;
-  background: rgba(246, 198, 248, 0.403); /* blush translucent */
+  background: rgba(246, 198, 248, 0.403); 
   backdrop-filter: blur(8px);
   color: #333;
   display: flex;
@@ -45,7 +45,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px; /* Adjust as needed */
+  max-width: 200px; 
 }
 
 .audio-sub {
@@ -54,7 +54,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 200px; /* Adjust as needed */
+  max-width: 200px; 
 }
 
 .audio-center {
