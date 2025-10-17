@@ -6,7 +6,7 @@ export default function SideBar() {
         <div className="sidebar-container">
             <img
                 className="main-logo"
-                src="public/microphone (2).png"
+                src="/microphone (2).png"
                 alt="mic-logo"
                 width="50px"
             />
