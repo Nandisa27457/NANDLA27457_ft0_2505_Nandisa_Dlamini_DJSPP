@@ -3,7 +3,7 @@ import SideBar from "../components/Sidebar";
 import Header from "../components/Header";
 import Podcasts from "../components/Podcasts";
 import RecommendedShows from "../components/RecommendedShows";
-import "../HomePage.css";
+import "./HomePage.css";
 
 export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState("");
