@@ -279,25 +279,6 @@ Podcast Details
 }
 
 
-@media (max-width: 900px) {
-    .podcast-header {
-        flex-direction: column;
-        align-items: center;
-    }
-    .podcast-header .poster img {
-        width: 180px;
-        height: 180px;
-    }
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .episode-thumb img {
-        width: 56px;
-        height: 56px;
-    }
-}
-
-
 /*================
 Pagination Buttons
 ====================*/
@@ -368,3 +349,29 @@ h2.favourites-title{
 h1{
     display:none;
 }
+
+@media (max-width: 319px) {
+    .podcast-header {
+        flex-direction: column;
+        align-items: center;
+    }
+    .podcast-header .poster img {
+        width: 180px;
+        height: 180px;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .episode-thumb img {
+        width: 56px;
+        height: 56px;
+    }
+    .season-card{
+    width:420px;
+}
+.sidebar-container{
+    background-color: #071226;
+}
+}
+
+
