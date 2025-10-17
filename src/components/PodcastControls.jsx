@@ -31,9 +31,9 @@ const PodcastControls = ({
             {/* Search Input */}
             <input
                 type="text" // Input type is text
-                placeholder="Search podcasts..." // Placeholder text for the search input
+                placeholder="Search podcasts.episodes and favourites..." // Placeholder text for the search input
                 value={searchQuery} // Binds input value to the searchQuery state
-                onChange={(e) => setSearchQuery(e.target.value)} // Updates searchQuery state on input change
+                onChange={(e) => setSearchQuery(e.target.value)} // Updates searchQuery state basedon input change
             />
         </div>
     );
